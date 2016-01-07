@@ -1,7 +1,6 @@
 """Happy Camper"""
 
 from jinja2 import StrictUndefined
-
 from flask import Flask, render_template, redirect, request, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.orm.exc import NoResultFound
@@ -18,13 +17,11 @@ from make_update_helpers import format_phone_number
 from search_helpers import search_radius, get_users_in_area, filter_products
 from search_helpers import get_products_within_dates, categorize_products
 from search_helpers import calc_default_dates, convert_string_to_datetime
+import os
 
 app = Flask(__name__)
 
-# For Flask sessions and debug toolbar
-app.secret_key = "ABC"
-
-# To raise an error if you use an undefined variable (Jinja2).
+app.secret_key = os.environ.get("FLASK_SECRET_KEY", "ABC")
 app.jinja_env.undefined = StrictUndefined
 
 

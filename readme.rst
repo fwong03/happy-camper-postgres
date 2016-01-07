@@ -12,7 +12,7 @@ Academy. Our session ends mid-December 2015.
 
 Technology Stack
 ================
-Application: Python, SQLite, Flask, Flask-SQLAlchemy, Jinja
+Application: Python, Postgresql, Flask, Flask-SQLAlchemy, Jinja
 
 APIs: GoogleMaps (geolocation-python 0.2.0)
 

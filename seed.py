@@ -125,7 +125,7 @@ def load_products():
         date2 = row[7]
         dollarz = float(row[8])
         image = row[9]
-        avail = int(row[10])
+        avail = row[10]
 
         date1 = datetime.strptime(date1, "%Y-%m-%d")
         date2 = datetime.strptime(date2, "%Y-%m-%d")

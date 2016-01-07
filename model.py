@@ -120,7 +120,7 @@ class Product(db.Model):
     # We use the available boolean to change the status to "unavailable" if
     # the item is rented out or the owner delists it (mentor Bert rec).
     available = db.Column(db.Boolean, default=True)
-    model = db.Column(db.String(16), nullable=False)
+    model = db.Column(db.String(64), nullable=False)
     condition = db.Column(db.String(356))
     description = db.Column(db.String(384))
     avail_start_date = db.Column(db.DateTime, nullable=False)
