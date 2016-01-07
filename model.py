@@ -1,8 +1,9 @@
 # Models and database for Happy Camper Hackbright project.
-# Version 1: October 27 to December 1st, 2015
+# Version 2:January 7, 2015
 
 from flask_sqlalchemy import SQLAlchemy
 import datetime
+import os
 
 db = SQLAlchemy()
 
@@ -38,18 +39,13 @@ class User(db.Model):
     lname = db.Column(db.String(32), nullable=False)
     street = db.Column(db.String(32), nullable=False)
     city = db.Column(db.String(32), nullable=False)
-
-    # Made this region_id instead of state_id in case want to expand internationally.
-    # ENUM would have also worked but less flexible (mentor Drew rec).
     region_id = db.Column(db.Integer, db.ForeignKey('regions.region_id'),
                           nullable=False)
-
-    # Make postalcode instead of zipcode to make it more international-friendly.
-    # Made string instead of integer in case begins with a zero (mentor Drew rec).
+    # Make postal code a string since it may start with zero (e.g. '02139')
     postalcode = db.Column(db.String(10), nullable=False)
-    # Leave phone as integer since that is how some API's like Twilio take (mentor
-    # Drew rec).
-    phone = db.Column(db.Integer, nullable=False)
+    # Change from v1: make phone a string. Otherwise use BigInteger? When
+    # converted to Postgresql, phone numbers were larger than int4
+    phone = db.Column(db.String(16), nullable=False)
     email = db.Column(db.String(64), nullable=False, unique=True)
     password = db.Column(db.String(32), nullable=False)
     profile_pic_url = db.Column(db.String(128))
@@ -323,11 +319,12 @@ class Rating(db.Model):
 
 ##############################################################################
 
-def connect_to_db(app, db_uri='postgresql://localhost/camper'):
+def connect_to_db(app, db_uri=None):
     """Connect the database to our Flask app."""
 
-    # Configure to use SQLite database
-    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+    postgrespassword = os.environ['POSTGRES_PASSWORD']
+
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri or 'postgresql://%s/camper' % postgrespassword
     app.config['SQLALCHEMY_ECHO'] = True
     db.app = app
     db.init_app(app)
